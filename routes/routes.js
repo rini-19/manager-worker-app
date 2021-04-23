@@ -7,6 +7,7 @@ const WriteTask = require("../controllers/taskController/writeTask");
 const ReadTask = require("../controllers/taskController/readTask");
 const ReviewTask = require("../controllers/taskController/reviewTask");
 const Profile = require("../controllers/userController/profile");
+const Workers = require("../controllers/userController/getWorkers");
 
 router.post("/loginManager", (req, res, next) => {
     Login.LoginManager(req, res, next);
@@ -20,6 +21,9 @@ router.post("/registerManager", (req, res, next) => {
 router.post("/registerWorker", (req, res, next) => {
     Register.RegisterWorker(req, res, next);
 });
+router.get("/getWorkers", (req, res, next) =>{
+    Workers.GetWorkers(req, res, next);
+})
 
 router.post("/postTask", (req, res, next) => {
     WriteTask.PostTask(req, res, next);
