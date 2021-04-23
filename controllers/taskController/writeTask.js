@@ -31,69 +31,19 @@ exports.PostTask = (req, res) =>{
 };
 
 exports.EditTask = async (req, res) =>{
-    const {TID, heading, description, time, points} = req.body;
-    console.log(typeof tid);
-    if(heading){
-        await Task.updateOne({_id: TID}, {
-            // $set:{
-                Heading: heading
-            
-        }).then(async (err, task) =>{
-            if(err){
-                res.status(500).send({ message: err });
-            } else {
-                res.json({
-                    message: "record updated"
-                })
-            }
-        });
+    try{
+        const editedTask = req.body;
+        const {TID} = req.params;
+        console.log(TID);
+        console.log(editedTask);
+        await Task.updateOne({_id:TID}, {$set: editedTask});
+        res.json({
+            message: "record updated"
+        })
+    } catch(err){
+        next(err);
     }
-    if(description){
-        await Task.updateOne({_id: TID}, {
-            // $set: {
-                Description: description
-            
-        }).then(async (err, task) =>{
-            if(err){
-                res.status(500).send({ message: err });
-            } else {
-                res.json({
-                    message: "record updated"
-                })
-            }
-        });
-    }
-    if(time){
-        await Task.updateOne({_id: TID}, {
-                Time:{
-                    Days: time.days,
-                    Hrs: time.hrs,
-                    Mins: time.mins 
-                 }
-        }).then(async (err, task) =>{
-            if(err){
-                res.status(500).send({ message: err });
-            } else {
-                res.json({
-                    message: "record updated"
-                })
-            }
-        });
-    }
-    if(points){
-        await Task.updateOne({_id: TID}, {
-            // $set:{
-                TotalPoints: points
-        }).then(async (err, task) =>{
-            if(err){
-                res.status(500).send({ message: err });
-            } else {
-                res.json({
-                    message: "record updated"
-                })
-            }
-        });
-    }
+    
 };
 
 exports.AssignTask = async (req, res) => {

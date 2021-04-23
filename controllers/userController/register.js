@@ -3,44 +3,34 @@ var Worker = require("../../models/worker");
 
 const bcrypt = require('bcryptjs');
 
-exports.RegisterManager = (req, res) =>{																				//check for duplicate email
-	const {name, email, password} = req.body;
-	var manager = new Manager({
-		Name: name.toLowerCase(),
-		Email: email.toLowerCase(),
-		Password: bcrypt.hashSync(password, 8),
-	});
-	manager.save((err, result) => {
-    if (err) {
-      console.log(err);
-      res.json({
-        message: "Sorry! Cannot insert record.",
-      });
-    } else {
-      res.json({
-        message: "record added.",
-      });
+exports.Register = async (req, res, next) =>{			
+  try{
+    const {name, email, password, role} = req.body;
+    if (!name || !email || !password) {
+      throw new ErrorHandler(400, 'Fields Cannot be empty');
     }
-  });
-};
-
-exports.RegisterWorker = (req, res) =>{																				//check for duplicate email
-	const {name, email, password} = req.body;
-	var worker = new Worker({
-		Name: name.toLowerCase(),
-		Email: email.toLowerCase(),
-		Password: bcrypt.hashSync(password, 8),
-	});
-	worker.save((err, result) => {
-    if (err) {
-      console.log(err);
-      res.json({
-        message: "Sorry! Cannot insert record.",
+    const hashPsswd = await bcrypt.hashSync(password, 8);
+    if(role==='manager'){
+      const exists = await Manager.findOne({ email });
+      if (exists) throw new ErrorHandler(409, 'Email already Exists');
+      var manager = new Manager({
+        Name: name.toLowerCase(),
+        Email: email.toLowerCase(),
+        Password: hashPsswd,
       });
-    } else {
-      res.json({
-        message: "record added.",
+      manager.save();
+    } else if(role==='worker'){
+      const exists = await Worker.findOne({ email });
+      if (exists) throw new ErrorHandler(409, 'Email already Exists');
+      var worker = new Worker({
+        Name: name.toLowerCase(),
+        Email: email.toLowerCase(),
+        Password: hashPsswd,
       });
+      worker.save();
+      res.status(200).json({message: 'User Created'});
     }
-  });
+  }	catch(err){
+    next(err);
+  }															
 };

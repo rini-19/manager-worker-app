@@ -9,17 +9,11 @@ const ReviewTask = require("../controllers/taskController/reviewTask");
 const Profile = require("../controllers/userController/profile");
 const Workers = require("../controllers/userController/getWorkers");
 
-router.post("/loginManager", (req, res, next) => {
-    Login.LoginManager(req, res, next);
+router.post("/login", (req, res, next) => {
+    Login.Login(req, res, next);
 });
-router.post("/loginWorker", (req, res, next) => {
-    Login.LoginWorker(req, res, next);
-});
-router.post("/registerManager", (req, res, next) => {
-    Register.RegisterManager(req, res, next);
-});
-router.post("/registerWorker", (req, res, next) => {
-    Register.RegisterWorker(req, res, next);
+router.post("/register", (req, res, next) => {
+    Register.Register(req, res, next);
 });
 router.get("/getWorkers", (req, res, next) =>{
     Workers.GetWorkers(req, res, next);
@@ -28,7 +22,7 @@ router.get("/getWorkers", (req, res, next) =>{
 router.post("/postTask", (req, res, next) => {
     WriteTask.PostTask(req, res, next);
 });
-router.post("/editTask", (req, res, next) => {
+router.patch("/editTask/:TID", (req, res, next) => {
     WriteTask.EditTask(req, res, next);
 });
 router.post("/assignTask", (req, res, next) => {
