@@ -18,7 +18,7 @@ exports.SubmitTask = async (req, res, next) =>{
 
 exports.ReviewTaskList = async (req, res) =>{
     try{
-        const {MID} = req.body;
+        const {MID} = req.query;
         const tasks = await Task.find({MId: MID, ReviewUpdate: 'AskReview'});
         if(tasks.length === 0) throw new ErrorHandler(404, 'Task Not Found');
         res.json(tasks);
