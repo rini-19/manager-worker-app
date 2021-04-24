@@ -1,15 +1,15 @@
 const Task = require("../../models/task");
 const Worker = require("../../models/worker");
+const { ErrorHandler } = require('../../services/errorHandler');
 
 const bcrypt = require('bcryptjs');
 
 exports.EditProfile = async (req, res, next) =>{
     try{
-        const {WID, email, password, name} = req.body;
+        const editedProfile = req.body;
+        const {WID} = req.params;
         await Worker.updateOne({_id:WID}, {
-            Email: email.toLowerCase(),
-            Password: bcrypt.hashSync(password, 8),
-            Name: name.toLowerCase()
+            $set: editedProfile
         })
         res.json({message: 'profile updated'});
     } catch (err){
@@ -19,7 +19,7 @@ exports.EditProfile = async (req, res, next) =>{
 
 exports.TaskHistory = async (req, res, next) => {
     try{
-        const {WID} = req.body;
+        const {WID} = req.query;
         const tasks = await Task.find({WId: WID, Status: 'Done'});
         if(tasks.length === 0) throw new ErrorHandler(404, 'Tasks Not Found');
         res.json(tasks);

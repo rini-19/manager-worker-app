@@ -29,18 +29,19 @@ const TaskSchema = mongoose.Schema({
   Time: {
     Days: {
         type: Number,
-        required: true,
         default: 0,
+        required: true,
     },
     Hrs: {
         type: Number,
-        required: true,
         default: 0,
+        required: true,
     },
     Mins: {
         type: Number,
-        required: true,
         default: 0,
+        required: true,
+        
     }
   },
   TotalPoints: {

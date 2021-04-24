@@ -46,10 +46,10 @@ router.get("/reviewTaskList", (req, res, next) => {
 router.post("/updateReview", (req, res, next) => {
     ReviewTask.UpdateReview(req, res, next);
 });
-router.post("/editProfile", (req, res, next) =>{
+router.patch("/editProfile/:WID", (req, res, next) =>{
     Profile.EditProfile(req, res, next);
 });
-router.post("/taskHistory", (req, res, next) =>{
+router.get("/taskHistory", (req, res, next) =>{
     Profile.TaskHistory(req, res, next);
 });
 router.get("/filterByDate", (req, res, next) =>{

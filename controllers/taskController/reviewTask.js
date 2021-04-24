@@ -16,7 +16,7 @@ exports.SubmitTask = async (req, res, next) =>{
     }
 };
 
-exports.ReviewTaskList = async (req, res) =>{
+exports.ReviewTaskList = async (req, res, next) =>{
     try{
         const {MID} = req.query;
         const tasks = await Task.find({MId: MID, ReviewUpdate: 'AskReview'});

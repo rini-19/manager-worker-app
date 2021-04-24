@@ -11,7 +11,7 @@ exports.Register = async (req, res, next) =>{
     }
     const hashPsswd = await bcrypt.hashSync(password, 8);
     if(role==='manager'){
-      const exists = await Manager.findOne({ email });
+      const exists = await Manager.findOne({Email: email });
       if (exists) throw new ErrorHandler(409, 'Email already Exists');
       var manager = new Manager({
         Name: name.toLowerCase(),
@@ -20,7 +20,7 @@ exports.Register = async (req, res, next) =>{
       });
       manager.save();
     } else if(role==='worker'){
-      const exists = await Worker.findOne({ email });
+      const exists = await Worker.findOne({Email: email });
       if (exists) throw new ErrorHandler(409, 'Email already Exists');
       var worker = new Worker({
         Name: name.toLowerCase(),
