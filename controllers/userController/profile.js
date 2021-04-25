@@ -3,14 +3,22 @@ const Worker = require("../../models/worker");
 const { ErrorHandler } = require('../../services/errorHandler');
 
 const bcrypt = require('bcryptjs');
+const worker = require("../../models/worker");
 
 exports.EditProfile = async (req, res, next) =>{
     try{
         const editedProfile = req.body;
         const {WID} = req.params;
-        await Worker.updateOne({_id:WID}, {
-            $set: editedProfile
-        })
+        worker = await Worker.findOne({_id: WID});
+        console.log(worker);
+        // await Worker.updateOne({_id:WID}, {
+        //     editedProfile
+        // })
+        for (let key in req.body) {
+            if (worker[key] && worker[key] !== req.body[key])
+                worker.$set[key] = req.body[key];
+        }
+        worker.save();
         res.json({message: 'profile updated'});
     } catch (err){
         next(err);
@@ -27,3 +35,4 @@ exports.TaskHistory = async (req, res, next) => {
         next(err);
     }
 }
+

@@ -9,6 +9,9 @@ exports.Login = async function(req, res, next){
 
 	try{
 		const {email, password, role} = req.body;
+		if (!email || !password || !role) {
+			throw new ErrorHandler(400, 'Fields Cannot be empty');
+		  }
 		console.log(email);
 		var user=null;
 		if(role==='manager'){
@@ -23,11 +26,15 @@ exports.Login = async function(req, res, next){
 		// const token = jwt.sign(payload, "constants.jwtString", {
 		// 		expiresIn: 5,
 		// });
+		user_data = {
+			Name: user.Name,
+			Email: user.Email
+		}
 		res.status(200).send({
 			message: "Login Authenticated", 
 			// token: token, 
 			id: user._id, 
-			user: user
+			user: user_data
 		});
 	} catch(err){
 		next(err);
